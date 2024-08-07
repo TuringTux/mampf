@@ -59,6 +59,7 @@ services:
       FEEDBACK_EMAIL: feedback@localhost
       PROJECT_NOTIFICATION_EMAIL: project+notification@localhost
       ERROR_EMAIL: mampf-error@localhost
+      WEBPACKER_DEV_SERVER_HOST: webpacker
       MEDIA_FOLDER: mampf
       REDIS_URL: redis://redis:6379/1
       SOLR_HOST: solr
@@ -70,6 +71,9 @@ services:
       - ../../:/usr/src/app/
       - ../../coverage:/usr/src/app/coverage/
       - "/usr/src/app/public/"
+      - type: volume
+        source: sprockets-cache
+        target: /cache
     depends_on:
       - db
       - solr
@@ -79,3 +83,29 @@ services:
       - backend
       - frontend
   
+  webpacker:
+    build:
+      context: ./../..
+      dockerfile: docker/test/Dockerfile
+    environment:
+      NODE_ENV: test
+      RAILS_ENV: test
+      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
+    entrypoint: ["sh", "-c", "yarn && ./bin/webpack-dev-server"]
+    volumes:
+      - type: bind
+        source: ../../
+        target: /usr/src/app/
+      - type: volume
+        source: sprockets-cache
+        target: /cache
+    ports:
+      - '127.0.0.1:3036:3036'
+    depends_on:
+      - db
+      - solr
+      - redis
+      - mailcatcher
+
+volumes:
+  sprockets-cache:

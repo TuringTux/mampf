@@ -106,8 +106,6 @@ gem "webpacker", "~> 5.x"
 group :development, :docker_development do
   gem "listen", "~> 3.9"
   gem "rails-erd"
-  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem "web-console", ">= 3.3.0"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem "marcel"
   gem "pgreset"
@@ -135,6 +133,9 @@ group :test, :development, :docker_development do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
   gem "factory_bot_rails"
   gem "rspec-rails"
+
+  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
+  gem "web-console", ">= 3.3.0"
 
   gem "simplecov-cobertura"
 

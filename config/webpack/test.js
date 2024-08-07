@@ -1,5 +1,7 @@
 process.env.NODE_ENV = process.env.NODE_ENV || "test";
 
 const environment = require("./environment");
+const config = environment.toWebpackConfig();
+config.output.filename = "js/[name]-[hash].js";
 
-module.exports = environment.toWebpackConfig();
+module.exports = config;

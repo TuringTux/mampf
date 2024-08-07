@@ -19,18 +19,18 @@ Rails.application.config.assets.precompile += ["edit_clicker_assets.js"]
 
 # fix concurrency issue that leads to occasional seg fault
 # See https://github.com/sass/sassc-ruby/issues/207
-if Rails.env.test?
-  Rails.application.configure do
-    config.assets.configure do |env|
-      env.export_concurrent = false
-    end
-  end
-end
+# if Rails.env.test?
+#   Rails.application.configure do
+#     config.assets.configure do |env|
+#       env.export_concurrent = false
+#     end
+#   end
+# end
 
 # Allow overriding of the sprockets cache path
 # This is done to fix this problem:
 # (https://github.com/rails/sprockets/issues/283#issuecomment-578728257)
-if Rails.env.docker_development?
+if Rails.env.docker_development? || Rails.env.test?
   Rails.application.config.assets.configure do |env|
     env.cache = Sprockets::Cache::FileStore.new(
       ENV.fetch("SPROCKETS_CACHE", "#{env.root}/tmp/cache/assets"),
